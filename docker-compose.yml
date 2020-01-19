@@ -1,0 +1,26 @@
+version: '3'
+volumes:
+  bundle:
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+      - 8080:8080
+    volumes:
+      - bundle:/usr/local/bundle
+      - .:/usr/src/app:delegated
+      - /usr/src/app/frontend/node_modules
+    stdin_open: true
+    tty: true
+    command: /bin/sh -c "bundle install; rm /usr/src/app/tmp/pids/server.pid; rails s -b 0.0.0.0 -p 3000"
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./src/db/mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+    ports:
+      - "3306:3306"
+
