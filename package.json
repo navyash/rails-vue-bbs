@@ -1,5 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "vee-validate": "^3.2.1"
+  }
 }
