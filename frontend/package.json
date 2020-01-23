@@ -11,6 +11,7 @@
     "core-js": "^3.4.4",
     "vee-validate": "^3.2.1",
     "vue": "^2.6.10",
+    "vue-router": "^3.1.5",
     "vuetify": "^2.1.0"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
+    "axios": "^0.19.2",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
@@ -39,7 +41,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": 1
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

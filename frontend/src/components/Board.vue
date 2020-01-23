@@ -5,7 +5,7 @@
         <v-toolbar color="grey lighten-3">
           <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-          <v-toolbar-title>Message Board</v-toolbar-title>
+          <v-toolbar-title>{{ topic.title }}</v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -15,25 +15,25 @@
         </v-toolbar>
 
         <v-list two-line>
-          <template v-for="(item, index) in items">
+          <template v-for="(comment, index) in comments">
 
             <v-list-item
-              :key="item.title"
+              :key="index"
             >
               <v-list-item-content>
-                <v-list-item-subtitle v-html="item.subtitle" inset class="mb-4"></v-list-item-subtitle>
-                <v-list-item-title v-html="item.title" inset></v-list-item-title>
+                <v-list-item-subtitle inset class="mb-4"><span class='text--primary'>{{ index + 1 }}: </span>{{ comment.name }}</v-list-item-subtitle>
+                <v-list-item-title v-html="comment.content" inset></v-list-item-title>
               </v-list-item-content>
 
               <v-list-item-action
-               :key="item.title"
+               :key="index"
               >
-                <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                <v-list-item-action-text v-text="comment.created_at"></v-list-item-action-text>
               </v-list-item-action>
             </v-list-item>
 
             <v-divider
-            v-if="index + 1 <= items.length"
+            v-if="index + 1 <= comments.length"
             :key="index"
             ></v-divider>
           </template>
@@ -90,53 +90,32 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 
 export default {
+  props: ['topic'],
   data: () => ({
       name: '',
       content: '',
-      items: [
-        {
-          subtitle: "<span class='text--primary'>1:</span> やまだ",
-          title:
-            "I'll be in your neighborhood",
-          action: '15min'
-        },
-        {
-          subtitle: "<span class='text--primary'>2:</span> スズキ",
-          title:
-            "Wish I could come.",
-          action: '15min'
-        },
-        {
-          subtitle: "<span class='text--primary'>3:</span> 佐藤",
-          title:
-            "Do you have Paris recommendations",
-          action: '15min'
-        },
-        {
-          subtitle: "<span class='text--primary'>4:</span> アンドウ",
-          title:
-            "Do you want to hang out?",
-          action: '15min'
-        },
-        {
-          subtitle: "<span class='text--primary'>5:</span> 山本",
-          title:
-            "Do you see what time it is?",
-          action: '15min'
-        },
-      ],
-
+      comments: null
   }),
+  mounted () {
+    const topic_id = this.topic.id
+    axios
+      .get('/api/v1/comments/' + topic_id)
+      .then(response => {
+        this.comments = response.data.data
+        console.log(this.topic.id)
+        console.log(this.comments)
+      })
+      .catch(error => console.log(error))
+  },
   methods: {
     onSubmit() {
       alert(this.content)
     }
   }
 }
-
 </script>
 
 <style scoped>

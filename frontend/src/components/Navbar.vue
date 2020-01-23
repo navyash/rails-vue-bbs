@@ -6,7 +6,7 @@
       app
     >
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="item in categories">
           <v-layout
             v-if="item.heading"
             :key="item.heading"
@@ -34,7 +34,7 @@
           >
             <v-list-item-content>
               <v-list-item-title>
-                {{ item.text }}
+                {{ item.name }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -45,32 +45,22 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      idialog: false,
-        drawer: null,
-      items: [
-        { text: '経済' },
-        { text: 'スポーツ' },
-        { text: '娯楽' },
-        { text: '美容' },
-        { text: '国際' },
-        { text: 'ローカル' },
-        { text: '金' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-        { text: 'ゲーム' },
-      ],
-    }),
+import axios from 'axios'
+
+export default {
+  data: () => ({
+    idialog: false,
+    drawer: null,
+    categories: null
+  }),
+  mounted () {
+    axios
+      .get('/api/v1/categories.json')
+      .then(response => {
+        this.categories = response.data.data
+        console.log(this.categories)
+      })
+      .catch(error => console.log(error))
   }
+}
 </script>
