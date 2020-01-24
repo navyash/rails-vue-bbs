@@ -128,7 +128,6 @@ export default {
           this.comments.push(response.data.data)
           this.name = '';
           this.content = '';
-          this.errors.clear();
         })
         .catch(error => alert(error))
     }

@@ -11,18 +11,18 @@
         to="/"
       >
         <router-link to="/">
-        <span>Bulletin Board System</span>
+        <span>BBS</span>
         </router-link>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+      <span class="hidden-md-and-down" v-show="isLogin">{{ user }}</span>
       <v-btn icon to="/search">
           <v-icon small>fas fa-search</v-icon>
       </v-btn>
-      <v-btn text to="/login" v-show="loginShow">ログイン</v-btn>
-      <v-btn text @click="logOut" v-show="logoutShow">ログアウト</v-btn>
+      <v-btn text to="/login" v-show="!isLogin">ログイン</v-btn>
+      <v-btn text @click="logOut" v-show="isLogin">ログアウト</v-btn>
       <v-btn text to="/sign_up">会員登録</v-btn>
-      <v-btn text to="/post">新規掲示板作成</v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -32,9 +32,8 @@ import axios from 'axios'
 
 export default {
   data: () => ({
-      isLogin: '',
-      loginShow: true,
-      logoutShow: false,
+      isLogin: false,
+      user: ''
   }),
   mounted () {
     axios
@@ -48,8 +47,8 @@ export default {
       })
       .then(response => {
         console.log(response)
-        this.loginShow = false
-        this.logoutShow = true
+        this.user = response.data.data.email
+        this.isLogin = true
       })
       .catch(error => console.log(error))
   },
@@ -70,4 +69,8 @@ a {
   color : #fff;
   text-decoration: none;
 }
+@media screen and (max-width: 640px) {
+  html { font-size: 12px;}
+}
+
 </style>

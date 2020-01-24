@@ -8,6 +8,17 @@
         </template>
       </v-container>
     </v-content>
+    <v-btn
+      bottom
+      color="pink"
+      dark
+      fab
+      fixed
+      right
+      to="/post"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
   </v-app>
 </template>
 
