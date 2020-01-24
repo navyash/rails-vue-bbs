@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :topics
       resources :categories
-      resources :comments, param: :topic_id, constraints: { topic_id: /\d+/ }
+      resources :topic_categories, only: [:show], param: :topic_id, constraints: { topic_id: /\d+/ }
+      resources :comments
+      resources :search, only: [:show], param: :word
+      resources :users, only: [:index]
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
           registrations: 'api/v1/auth/registrations'
       }

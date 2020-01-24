@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 1100px;">
+  <!-- <div style="max-width: 1100px;"> -->
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -41,7 +41,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -51,11 +51,11 @@ export default {
   data: () => ({
     idialog: false,
     drawer: null,
-    categories: null
+    categories: []
   }),
   mounted () {
     axios
-      .get('/api/v1/categories.json')
+      .get('/api/v1/categories')
       .then(response => {
         this.categories = response.data.data
         console.log(this.categories)

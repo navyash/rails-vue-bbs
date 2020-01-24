@@ -3,15 +3,11 @@
     <v-col cols="12">
       <v-card>
         <v-toolbar color="grey lighten-3">
-          <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-          <v-toolbar-title>{{ topic.title }}</v-toolbar-title>
-
-          <v-spacer></v-spacer>
-
-          <v-btn icon>
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
+            <v-toolbar-title>{{ topic.title }}
+            <template v-for="(category, index) in categories">
+              <v-chip class="ma-2" :key="index">{{ category.name }}</v-chip>
+            </template>
+          </v-toolbar-title>
         </v-toolbar>
 
         <v-list two-line>
@@ -21,14 +17,14 @@
               :key="index"
             >
               <v-list-item-content>
-                <v-list-item-subtitle inset class="mb-4"><span class='text--primary'>{{ index + 1 }}: </span>{{ comment.name }}</v-list-item-subtitle>
+                <v-list-item-subtitle inset class="mb-4"><span class='text--primary'>{{ index + 1 }}： </span>{{ comment.name }}<span>：{{ comment.created_at | moment }}</span></v-list-item-subtitle>
                 <v-list-item-title v-html="comment.content" inset></v-list-item-title>
               </v-list-item-content>
 
               <v-list-item-action
                :key="index"
               >
-                <v-list-item-action-text v-text="comment.created_at"></v-list-item-action-text>
+                <v-list-item-action-text></v-list-item-action-text>
               </v-list-item-action>
             </v-list-item>
 
@@ -47,7 +43,7 @@
                     <v-col
                       cols="3"
                     >
-                      <validation-provider name="名前" rules="required|max:10" v-slot="{ errors }">
+                      <validation-provider name="名前" rules="max:10" v-slot="{ errors }">
                         <v-text-field
                           label="名前"
                           v-model="name"
@@ -91,30 +87,57 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment';
+moment.lang('ja', {
+    weekdaysShort: ["日","月","火","水","木","金","土"],
+});
 
 export default {
   props: ['topic'],
   data: () => ({
       name: '',
       content: '',
-      comments: null
+      comments: null,
+      categories: null
   }),
   mounted () {
-    const topic_id = this.topic.id
     axios
-      .get('/api/v1/comments/' + topic_id)
+      .get('/api/v1/topics/' + this.topic.id)
       .then(response => {
+        console.log(response)
         this.comments = response.data.data
-        console.log(this.topic.id)
-        console.log(this.comments)
+      })
+      .catch(error => console.log(error))
+    axios
+      .get('/api/v1/topic_categories/' + this.topic.id)
+      .then(response => {
+        this.categories = response.data.data
       })
       .catch(error => console.log(error))
   },
   methods: {
     onSubmit() {
-      alert(this.content)
+      axios
+        .post('/api/v1/comments', {
+          topic_id: this.topic.id,
+          name: this.name,
+          content: this.content
+        })
+        .then(response => {
+          console.log(response)
+          this.comments.push(response.data.data)
+          this.name = '';
+          this.content = '';
+          this.errors.clear();
+        })
+        .catch(error => alert(error))
     }
-  }
+  },
+  filters: {
+    moment: function (date) {
+      return moment(date).format('YYYY/MM/DD(ddd) HH:mm:ss');
+    }
+  },
 }
 </script>
 

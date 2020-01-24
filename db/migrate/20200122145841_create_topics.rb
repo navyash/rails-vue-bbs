@@ -1,6 +1,10 @@
 class CreateTopics < ActiveRecord::Migration[5.2]
   def change
-    create_table :topics do |t|
+    options = {
+      :force => true,
+      :options => "ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    }
+    create_table(:topics, options) do |t|
       t.string :title
 
       t.timestamps

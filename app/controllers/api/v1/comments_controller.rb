@@ -7,8 +7,7 @@ module Api
       end
 
       def show
-        # comment = Comment.find(topic_id: params[:topic_id])
-        comment = Comment.where(topic_id: params[:topic_id])
+        comment = Comment.find(params[:id])
         render json: {status: 'SUCCESS', message: 'Loaded comment', data: comment}, status: :ok
       end
 

@@ -21,12 +21,12 @@
                   dark
                   flat
                 >
-                  <v-toolbar-title>Login form</v-toolbar-title>
+                  <v-toolbar-title>ログイン</v-toolbar-title>
                   <v-spacer></v-spacer>
                 </v-toolbar>
-                <v-card-text>
-                  <validation-observer v-slot="{ handleSubmit }">
-                    <v-form @submit.prevent="handleSubmit(onSubmit)">
+                <validation-observer v-slot="{ handleSubmit }">
+                  <v-form @submit.prevent="handleSubmit(onSubmit)">
+                    <v-card-text>
                       <validation-provider name="メールアドレス" rules="required|email" v-slot="{ errors }">
                         <v-text-field
                           label="メールアドレス"
@@ -34,6 +34,7 @@
                           :error-messages="errors"
                           name="email"
                           type="text"
+                          prepend-icon="person"
                         ></v-text-field>
                       </validation-provider>
                       <validation-provider name="パスワード" rules="required" v-slot="{ errors }">
@@ -44,15 +45,16 @@
                           :error-messages="errors"
                           name="password"
                           type="password"
+                          prepend-icon="lock"
                         ></v-text-field>
                       </validation-provider>
-                    </v-form>
-                  </validation-observer>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" type="submit">Login</v-btn>
-                </v-card-actions>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" type="submit">ログイン </v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </validation-observer>
               </v-card>
             </v-flex>
           </v-layout>
@@ -63,6 +65,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data: () => ({
       email: '',
@@ -70,7 +74,17 @@ export default {
   }),
   methods: {
     onSubmit() {
-      alert(this.password)
+      axios
+        .post('/api/v1/auth/sign_in', {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          console.log(response)
+          this.$router.push('/')
+          this.$router.go({path: '/', force: true})
+        })
+        .catch(error => alert(error))
     }
   }
 }

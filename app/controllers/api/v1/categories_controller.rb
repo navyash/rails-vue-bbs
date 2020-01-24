@@ -1,6 +1,6 @@
 module Api
   module V1
-    class CategoriesController < ApplicationController
+    class CategoriesController < ApplicationController  
       def index
         categories = Category.order('created_at desc')
         render json: {status: 'SUCCESS', message: 'Loaded categories', data: categories}, status: :ok

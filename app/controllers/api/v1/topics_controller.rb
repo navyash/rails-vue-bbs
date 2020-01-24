@@ -7,7 +7,8 @@ module Api
       end
 
       def show
-        topic = Topic.find(params[:id])
+        # topic = Topic.find(params[:id])
+        topic = Topic.joins(:comments).where(id: params[:id]).select('topics.*, comments.*')
         render json: {status: 'SUCCESS', message: 'Loaded topic', data: topic}, status: :ok
       end
 
