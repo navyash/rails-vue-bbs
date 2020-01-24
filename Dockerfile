@@ -10,10 +10,11 @@ COPY Gemfile .
 COPY Gemfile.lock .
 RUN bundle install
 
+CMD /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 8080 -b '0.0.0.0'"
+
 RUN mkdir frontend
 COPY frontend/package.json frontend/.
 COPY frontend/package-lock.json frontend/.
 RUN cd frontend && npm install
 
 
-CMD /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 8080 -b '0.0.0.0'"
