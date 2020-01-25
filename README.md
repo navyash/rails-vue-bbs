@@ -1,24 +1,16 @@
-# README
+# RAEDME
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+5chのようなWEB掲示板です。
 
-Things you may want to cover:
+## サイト
 
-* Ruby version
+http://34.84.208.231:8080/
 
-* System dependencies
 
-* Configuration
+## 機能
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- ログイン/ログアウト機能
+- 閲覧/投稿機能
+- スレッド（コメント機能）
+- カテゴリ機能
+- 横断検索機能
