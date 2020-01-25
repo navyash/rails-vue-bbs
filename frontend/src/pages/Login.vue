@@ -27,6 +27,9 @@
                 <validation-observer v-slot="{ handleSubmit }">
                   <v-form @submit.prevent="handleSubmit(onSubmit)">
                     <v-card-text>
+                      <v-alert type="error" v-show="alertFlg">
+                        {{ errorMessage }}
+                      </v-alert>
                       <validation-provider name="メールアドレス" rules="required|email" v-slot="{ errors }">
                         <v-text-field
                           label="メールアドレス"
@@ -71,6 +74,8 @@ export default {
   data: () => ({
       email: '',
       password: '',
+      errorMessage : '',
+      alertFlg : false
   }),
   methods: {
     onSubmit() {
@@ -84,7 +89,10 @@ export default {
           this.$router.push('/')
           this.$router.go({path: '/', force: true})
         })
-        .catch(error => alert(error))
+        .catch(
+          this.errorMessage = 'ログインできませんでした。',
+          this.alertFlg = true
+        )
     }
   }
 }

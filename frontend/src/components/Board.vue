@@ -36,7 +36,7 @@
         </v-list>
         <v-list three-line>
           <template>
-            <validation-observer v-slot="{ handleSubmit }">
+            <validation-observer v-slot="{ handleSubmit }" ref="observer">
               <v-form @submit.prevent="handleSubmit(onSubmit)">
                 <v-container :class="grid-list-xs">
                   <v-row dense style="height:65px">
@@ -128,6 +128,7 @@ export default {
           this.comments.push(response.data.data)
           this.name = '';
           this.content = '';
+          this.$refs.observer.reset()
         })
         .catch(error => alert(error))
     }

@@ -27,6 +27,9 @@
                 <validation-observer v-slot="{ handleSubmit }">
                   <v-form @submit.prevent="handleSubmit(onSubmit)">
                     <v-card-text>
+                      <v-alert :type="alertType" v-show="alertFlg">
+                        {{ message }}
+                      </v-alert>
                       <validation-provider name="メールアドレス" rules="required|email" v-slot="{ errors }">
                         <v-text-field
                           label="メールアドレス"
@@ -37,7 +40,7 @@
                           prepend-icon="person"
                         ></v-text-field>
                       </validation-provider>
-                      <validation-provider name="パスワード" rules="required|min6" v-slot="{ errors }">
+                      <validation-provider name="パスワード" rules="required|min:6" v-slot="{ errors }">
                         <v-text-field
                           id="password"
                           label="パスワード"
@@ -71,6 +74,9 @@ export default {
   data: () => ({
       email: '',
       password: '',
+      alertType: '',
+      message: '',
+      alertFlg: false
   }),
   methods: {
     onSubmit() {
@@ -81,8 +87,15 @@ export default {
         })
         .then(response => {
           console.log(response)
+          this.alertType = 'success'
+          this.message = '会員登録が完了しました。'
+          this.alertFlg = true
         })
-        .catch(error => alert(error))
+        .catch(
+          this.alertType = 'error',
+          this.message = '登録できませんでした。',
+          this.alertFlg = true
+        )
     }
   }
 }
