@@ -27,8 +27,11 @@
                 <validation-observer v-slot="{ handleSubmit }">
                   <v-form @submit.prevent="handleSubmit(onSubmit)">
                     <v-card-text>
-                      <v-alert :type="alertType" v-show="alertFlg">
-                        {{ message }}
+                      <v-alert type="success" v-show="successFlg">
+                        {{ successMessage }}
+                      </v-alert>
+                      <v-alert type="error" v-show="errorFlg">
+                        {{ errorMessage }}
                       </v-alert>
                       <validation-provider name="メールアドレス" rules="required|email" v-slot="{ errors }">
                         <v-text-field
@@ -74,12 +77,15 @@ export default {
   data: () => ({
       email: '',
       password: '',
-      alertType: '',
-      message: '',
-      alertFlg: false
+      successMessage: '',
+      errorMessage: '',
+      successFlg: false,
+      errorFlg: false
   }),
   methods: {
     onSubmit() {
+      this.successFlg= false
+      this.errorFlg= false
       axios
         .post('/api/v1/auth', {
           email: this.email,
@@ -87,15 +93,14 @@ export default {
         })
         .then(response => {
           console.log(response)
-          this.alertType = 'success'
-          this.message = '会員登録が完了しました。'
-          this.alertFlg = true
+          this.successMessage = '会員登録が完了しました。'
+          this.successFlg = true
         })
-        .catch(
-          this.alertType = 'error',
-          this.message = '登録できませんでした。',
-          this.alertFlg = true
-        )
+        .catch(error=>{
+          console.log(error)
+          this.errorMessage = '登録できませんでした。',
+          this.errorFlg = true
+        })
     }
   }
 }
