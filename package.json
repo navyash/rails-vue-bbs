@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "vee-validate": "^3.2.1"
   }
 }
